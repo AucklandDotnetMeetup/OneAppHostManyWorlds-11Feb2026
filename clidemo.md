@@ -27,3 +27,12 @@
     - `dotnet ef database update`
 - update endpoints and http file for testing
 
+# Angular Integration
+- remove blazor `Web` project and its references from `AppHost`
+- check if angualar is installed via `ng version`
+- install angular via `npm install -g @angular/cli`
+- create angular project via `ng new aspire-angular --style css --routing true --ssr=no`
+- `aspire add javascript` to add js integration to the app host
+- adapt `AppHost.cs` to serve angular app
+- change Angular App to call API
+
