@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
-builder.AddAzureChatCompletionsClient("chat");
+builder.AddAzureChatCompletionsClient("chat").AddChatClient();
 
 // Add service defaults & Aspire client integrations
 builder.AddServiceDefaults();

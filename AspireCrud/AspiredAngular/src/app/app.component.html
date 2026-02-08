@@ -117,7 +117,7 @@
           <span class="temp-f">{{ getTemperatureF(forecast.temperatureC) }}°F</span>
         </div>
         <div class="summary">{{ forecast.summary }}</div>
-        <div class="description" *ngIf="forecast.description">
+        <div class="description" *ngIf="forecast.description && forecast.description.trim().length > 0">
           {{ forecast.description }}
         </div>
         <div class="forecast-id">ID: {{ forecast.id }}</div>

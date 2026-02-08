@@ -19,10 +19,10 @@ public class WeatherSummaryEnricher
     }
 
     [Function("WeatherSummaryEnricher")]
-    public async Task Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer)
+    public async Task Run([TimerTrigger("*/30 * * * * *")] TimerInfo myTimer, CancellationToken cancellationToken)
     {
         _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTime.Now);
-        
+
         if (myTimer.ScheduleStatus is not null)
         {
             _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
@@ -30,13 +30,14 @@ public class WeatherSummaryEnricher
 
         try
         {
-            var forecasts = await _weatherClient.GetAllForecastsAsync();
+            var totalDescriptionsCreated = 0;
+            var forecasts = await _weatherClient.GetAllForecastsAsync(cancellationToken);
             _logger.LogInformation("Successfully retrieved {count} weather forecasts", forecasts?.Count ?? 0);
-            
+
             foreach (var forecast in forecasts ?? [])
             {
                 _logger.LogInformation("Forecast for {date}: {summary} with {tempC}°C", forecast.Date, forecast.Summary, forecast.TemperatureC);
-                
+
                 // Determine correct summary based on temperature
                 var correctSummary = forecast.TemperatureC switch
                 {
@@ -55,15 +56,20 @@ public class WeatherSummaryEnricher
                 // Update if summary is incorrect
                 if (forecast.Summary != correctSummary || string.IsNullOrEmpty(forecast.Description))
                 {
-                    _logger.LogInformation("Updating forecast {id}: '{oldSummary}' -> '{newSummary}'", 
+                    _logger.LogInformation("Updating forecast {id}: '{oldSummary}' -> '{newSummary}'",
                         forecast.Id, forecast.Summary, correctSummary);
-                    
+
                     forecast.Summary = correctSummary;
-                    forecast.Description = await _describer.DescribeAsync(forecast);
-                    await _weatherClient.UpdateForecastAsync(forecast.Id, forecast);
+                    if (string.IsNullOrEmpty(forecast.Description) && totalDescriptionsCreated < 3)
+                    {
+                        _logger.LogInformation("Generating description for forecast {id}", forecast.Id);
+                        forecast.Description = await _describer.DescribeAsync(forecast);
+                        totalDescriptionsCreated++;
+                    }
+                    await _weatherClient.UpdateForecastAsync(forecast.Id, forecast, cancellationToken);
                 }
             }
-            
+
             _logger.LogInformation("Weather summary enrichment completed");
         }
         catch (Exception ex)

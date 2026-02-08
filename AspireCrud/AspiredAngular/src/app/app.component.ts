@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
     this.error = null;
     this.weatherService.getAll().subscribe({
       next: (data) => {
+        console.log('Loaded forecasts:', data);
         this.forecasts = data;
         this.loading = false;
       },
