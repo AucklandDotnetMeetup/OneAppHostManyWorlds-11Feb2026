@@ -36,3 +36,9 @@
 - adapt `AppHost.cs` to serve angular app
 - change Angular App to call API
 
+# Azure Function Integration
+- check `func --version` to see if azure functions cli is installed
+- run `func init AspireCrud.Function --worker-runtime dotnet-isolated` to create a new azure function project
+- add azure function project to solution via `dotnet sln add AspireCrud.Function/AspireCrud_Function.csproj`
+- create a new azure function called `WeatherSummaryEnricher` via calling this
+    func new   --name WeatherSummaryEnricher   --template "Timer trigger"
