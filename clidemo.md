@@ -52,6 +52,8 @@
 
 # GitHub Models Integration
 - `aspire add github-models`
+- `dotnet add package Aspire.Azure.AI.Inference --prerelease`
+
 
 # References
 - [Aspire | SQL Server Integration](https://aspire.dev/integrations/databases/sql-server/sql-server-get-started/?lang=csharp)

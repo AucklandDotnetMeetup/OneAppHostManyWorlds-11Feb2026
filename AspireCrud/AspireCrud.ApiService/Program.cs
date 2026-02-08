@@ -1,5 +1,6 @@
 using AspireCrud.ApiService;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.AI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
+builder.AddAzureChatCompletionsClient("chat");
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -110,4 +112,26 @@ public class WeatherForecast
     public string? Summary { get; set; }
 
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
+
+public interface IForecastDescriber
+{
+    Task<string> DescribeAsync(WeatherForecast forecast);
+}
+
+public class ForecastDescriber : IForecastDescriber
+{
+    private readonly IChatClient _chatClient;
+
+    public ForecastDescriber(IChatClient chatClient)
+    {
+        _chatClient = chatClient;
+    }
+
+    public async Task<string> DescribeAsync(WeatherForecast forecast)
+    {
+        var prompt = $"Describe the following weather forecast in a human-friendly way: Date: {forecast.Date}, Temp: {forecast.TemperatureC}°C, Summary: {forecast.Summary}";
+        var response = await _chatClient.GetResponseAsync(prompt);
+        return response.Text;
+    }
 }
