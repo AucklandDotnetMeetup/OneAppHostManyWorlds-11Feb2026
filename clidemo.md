@@ -40,5 +40,13 @@
 - check `func --version` to see if azure functions cli is installed
 - run `func init AspireCrud.Function --worker-runtime dotnet-isolated` to create a new azure function project
 - add azure function project to solution via `dotnet sln add AspireCrud.Function/AspireCrud_Function.csproj`
+- aspire integration as `aspire add azure-functions`
 - create a new azure function called `WeatherSummaryEnricher` via calling this
     func new   --name WeatherSummaryEnricher   --template "Timer trigger"
+
+<!-- # Open API to Client Generation
+- check `https://localhost:7494/openapi/v1.json`
+- install openapi generator via `dotnet tool install --global Microsoft.dotnet-openapi`
+- verify installation via `dotnet openapi --help` -->
+
+
