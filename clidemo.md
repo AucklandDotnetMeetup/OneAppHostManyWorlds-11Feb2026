@@ -50,4 +50,18 @@
 - install openapi generator via `dotnet tool install --global Microsoft.dotnet-openapi`
 - verify installation via `dotnet openapi --help` -->
 
+# GitHub Models Integration
+- `aspire add github-models`
 
+# References
+- [Aspire | SQL Server Integration](https://aspire.dev/integrations/databases/sql-server/sql-server-get-started/?lang=csharp)
+- [Aspire | JavaScript Integration](https://aspire.dev/integrations/frameworks/javascript/)
+- [Aspire | Azure Functions Integration](https://aspire.dev/integrations/cloud/azure/azure-functions/?environment=vscode)
+- [Aspire | Azure Storage Blobs Integration](https://aspire.dev/integrations/cloud/azure/azure-storage-blobs/)
+- [Aspire | GitHub Models Integration](https://aspire.dev/integrations/ai/github-models/)
+- [Aspire Samples | Javascript Integration](https://github.com/dotnet/aspire-samples/tree/main/samples/aspire-with-javascript)
+- [Aspire Samples | Azure Functions Integration](https://github.com/dotnet/aspire-samples/tree/main/samples/aspire-with-azure-functions)
+- [Angular | Installation](https://angular.dev/installation)
+- [Angular | ng new](https://angular.dev/cli/new)
+- [Azure Function | Local Development](https://learn.microsoft.com/en-nz/azure/azure-functions/functions-run-local?tabs=macos%2Cisolated-process%2Cnode-v4%2Cpython-v2%2Chttp-trigger%2Ccontainer-apps&pivots=programming-language-csharp#install-the-azure-functions-core-tools)
+- [Azure Function | .NET Aspire Integration](https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-aspire-integration)
