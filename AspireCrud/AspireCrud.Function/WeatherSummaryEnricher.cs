@@ -9,11 +9,13 @@ public class WeatherSummaryEnricher
 {
     private readonly ILogger _logger;
     private readonly WeatherForecastClient _weatherClient;
+    private readonly IForecastDescriber _describer;
 
-    public WeatherSummaryEnricher(ILoggerFactory loggerFactory, WeatherForecastClient weatherClient)
+    public WeatherSummaryEnricher(ILoggerFactory loggerFactory, WeatherForecastClient weatherClient, IForecastDescriber describer)
     {
         _logger = loggerFactory.CreateLogger<WeatherSummaryEnricher>();
         _weatherClient = weatherClient;
+        _describer = describer;
     }
 
     [Function("WeatherSummaryEnricher")]
@@ -51,12 +53,13 @@ public class WeatherSummaryEnricher
                 };
 
                 // Update if summary is incorrect
-                if (forecast.Summary != correctSummary)
+                if (forecast.Summary != correctSummary || string.IsNullOrEmpty(forecast.Description))
                 {
                     _logger.LogInformation("Updating forecast {id}: '{oldSummary}' -> '{newSummary}'", 
                         forecast.Id, forecast.Summary, correctSummary);
                     
                     forecast.Summary = correctSummary;
+                    forecast.Description = await _describer.DescribeAsync(forecast);
                     await _weatherClient.UpdateForecastAsync(forecast.Id, forecast);
                 }
             }

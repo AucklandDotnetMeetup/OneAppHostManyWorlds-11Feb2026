@@ -20,7 +20,8 @@ export class AppComponent implements OnInit {
   formModel: WeatherForecast = {
     date: new Date().toISOString().split('T')[0],
     temperatureC: 20,
-    summary: ''
+    summary: '',
+    description: ''
   };
   
   isEditing = false;
@@ -128,7 +129,8 @@ export class AppComponent implements OnInit {
     this.formModel = {
       date: new Date().toISOString().split('T')[0],
       temperatureC: 20,
-      summary: ''
+      summary: '',
+      description: ''
     };
     this.isEditing = false;
     this.showForm = false;

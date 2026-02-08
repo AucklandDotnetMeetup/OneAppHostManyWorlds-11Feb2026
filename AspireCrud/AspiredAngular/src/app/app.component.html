@@ -77,6 +77,17 @@
         </select>
       </div>
 
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="formModel.description"
+          name="description"
+          rows="3"
+          placeholder="Add detailed weather description..."
+        ></textarea>
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="btn btn-success" [disabled]="loading">
           {{ isEditing ? '💾 Update' : '✅ Create' }}
@@ -106,6 +117,9 @@
           <span class="temp-f">{{ getTemperatureF(forecast.temperatureC) }}°F</span>
         </div>
         <div class="summary">{{ forecast.summary }}</div>
+        <div class="description" *ngIf="forecast.description">
+          {{ forecast.description }}
+        </div>
         <div class="forecast-id">ID: {{ forecast.id }}</div>
       </div>
       <div class="forecast-actions">
