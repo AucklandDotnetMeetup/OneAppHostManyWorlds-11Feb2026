@@ -37,6 +37,7 @@
 - change Angular App to call API
 
 # Azure Function Integration
+- run `aspire add azure-storage` 
 - check `func --version` to see if azure functions cli is installed
 - run `func init AspireCrud.Function --worker-runtime dotnet-isolated` to create a new azure function project
 - add azure function project to solution via `dotnet sln add AspireCrud.Function/AspireCrud_Function.csproj`

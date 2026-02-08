@@ -1,3 +1,4 @@
+using AspireCrud_Function;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,8 +11,8 @@ builder.ConfigureFunctionsWebApplication();
 // Add service defaults & Aspire client integrations
 builder.AddServiceDefaults();
 
-// Add HTTP client for ApiService
-builder.Services.AddHttpClient("ApiService", client =>
+// Add typed HTTP client for ApiService
+builder.Services.AddHttpClient<WeatherForecastClient>(client =>
 {
     client.BaseAddress = new Uri("https+http://apiservice");
 });
