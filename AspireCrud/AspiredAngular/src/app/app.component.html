@@ -1,0 +1,141 @@
+
+
+
+<div class="container">
+  <header>
+    <h1>🌤️ {{ title }}</h1>
+    <p class="subtitle">Manage your weather forecasts with full CRUD operations</p>
+  </header>
+
+  <!-- Error Message -->
+  <div class="error" *ngIf="error">
+    <span>⚠️ {{ error }}</span>
+    <button (click)="error = null" class="close-btn">×</button>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="actions">
+    <button (click)="showForm = !showForm; isEditing = false; resetForm()" class="btn btn-primary">
+      {{ showForm ? '❌ Cancel' : '➕ New Forecast' }}
+    </button>
+    <button (click)="createBatch()" class="btn btn-secondary" [disabled]="loading">
+      📦 Create Batch
+    </button>
+    <button (click)="loadForecasts()" class="btn btn-secondary" [disabled]="loading">
+      🔄 Refresh
+    </button>
+  </div>
+
+  <!-- Create/Edit Form -->
+  <div class="form-card" *ngIf="showForm">
+    <h2>{{ isEditing ? '✏️ Edit Forecast' : '➕ Create New Forecast' }}</h2>
+    <form (ngSubmit)="isEditing ? updateForecast() : createForecast()">
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input
+          type="date"
+          id="date"
+          [(ngModel)]="formModel.date"
+          name="date"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="temperature">Temperature (°C)</label>
+        <input
+          type="number"
+          id="temperature"
+          [(ngModel)]="formModel.temperatureC"
+          name="temperature"
+          required
+        />
+        <small>
+          ≈ {{ getTemperatureF(formModel.temperatureC) }}°F
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="summary">Summary</label>
+        <select
+          id="summary"
+          [(ngModel)]="formModel.summary"
+          name="summary"
+          required
+        >
+          <option value="">Select weather...</option>
+          <option value="Freezing">❄️ Freezing</option>
+          <option value="Bracing">🥶 Bracing</option>
+          <option value="Chilly">🧊 Chilly</option>
+          <option value="Cool">😌 Cool</option>
+          <option value="Mild">🌤️ Mild</option>
+          <option value="Warm">☀️ Warm</option>
+          <option value="Balmy">🌞 Balmy</option>
+          <option value="Hot">🔥 Hot</option>
+          <option value="Sweltering">🥵 Sweltering</option>
+          <option value="Scorching">♨️ Scorching</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="formModel.description"
+          name="description"
+          rows="3"
+          placeholder="Add detailed weather description..."
+        ></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success" [disabled]="loading">
+          {{ isEditing ? '💾 Update' : '✅ Create' }}
+        </button>
+        <button type="button" (click)="cancelEdit(); resetForm()" class="btn btn-secondary">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <!-- Forecasts Grid -->
+  <div class="forecasts-grid" *ngIf="!loading">
+    <div class="forecast-card" *ngFor="let forecast of forecasts">
+      <div class="forecast-header" [style.background]="getTemperatureColor(forecast.temperatureC)">
+        <h3>{{ forecast.date | date: 'MMM d, y' }}</h3>
+      </div>
+      <div class="forecast-body">
+        <div class="temperature">
+          <span class="temp-c">{{ forecast.temperatureC }}°C</span>
+          <span class="temp-f">{{ getTemperatureF(forecast.temperatureC) }}°F</span>
+        </div>
+        <div class="summary">{{ forecast.summary }}</div>
+        <div class="description" *ngIf="forecast.description && forecast.description.trim().length > 0">
+          {{ forecast.description }}
+        </div>
+        <div class="forecast-id">ID: {{ forecast.id }}</div>
+      </div>
+      <div class="forecast-actions">
+        <button (click)="editForecast(forecast)" class="btn-icon" title="Edit">
+          ✏️
+        </button>
+        <button (click)="deleteForecast(forecast.id)" class="btn-icon btn-danger" title="Delete">
+          🗑️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && forecasts.length === 0">
+    <p>📭 No forecasts found</p>
+    <p>Create your first forecast or load a batch!</p>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+@ApiService_HostAddress = http://localhost:5519
+
+
+# Get all weather forecasts
+GET {{ApiService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+# Create a new weather forecast
+POST {{ApiService_HostAddress}}/weatherforecast
+Content-Type: application/json
+
+{
+  "date": "2026-02-15",
+  "temperatureC": 25,
+  "summary": "Warm"
+}
+
+###
+
+# Update an existing weather forecast (replace {id} with actual ID)
+PUT {{ApiService_HostAddress}}/weatherforecast/1
+Content-Type: application/json
+
+{
+  "date": "2026-02-16",
+  "temperatureC": 30,
+  "summary": "Hot"
+}
+
+###
+
+# Delete a weather forecast (replace {id} with actual ID)
+DELETE {{ApiService_HostAddress}}/weatherforecast/1
+
+###
+
+# Create batch of weather forecasts
+POST {{ApiService_HostAddress}}/weatherforecast/batch
+Content-Type: application/json
+
+###
